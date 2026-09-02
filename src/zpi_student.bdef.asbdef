@@ -1,0 +1,15 @@
+managed implementation in class zbp_pi_student unique;
+strict ( 2 );
+
+
+define behavior for ZPI_Student //alias <alias_name>
+persistent table zpstudent
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create;
+  update;
+  delete;
+  field ( readonly ) created_by,created_at,changed_by,changed_at;
+}

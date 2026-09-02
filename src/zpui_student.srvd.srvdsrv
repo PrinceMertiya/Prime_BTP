@@ -1,0 +1,6 @@
+@EndUserText.label: 'service definition'
+define service ZPUI_STUDENT
+{
+    expose ZPC_STUDENT as Student ;
+    
+}
