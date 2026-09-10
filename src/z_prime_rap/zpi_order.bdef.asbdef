@@ -1,0 +1,41 @@
+managed implementation in class zbp_pi_order unique;
+strict ( 2 );
+
+define behavior for ZPI_ORDER //alias <alias_name>
+persistent table zporder_hdr
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) OrderId;
+  association _Item { create; }
+}
+
+define behavior for ZPI_ORDER_ITEM //alias <alias_name>
+persistent table zporder_item
+lock dependent by _Order
+authorization dependent by _Order
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) OrderId, ItemNo;
+  association _Order;
+  association _Schedule { create; }
+}
+
+define behavior for ZPI_ORDER_SCH //alias <alias_name>
+persistent table zporder_sch
+lock dependent by _Order
+authorization dependent by _Order
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) OrderId, ItemNo, ScheduleNo;
+  association _Order;
+  association _Item;
+}

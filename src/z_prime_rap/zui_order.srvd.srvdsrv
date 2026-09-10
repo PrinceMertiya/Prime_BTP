@@ -1,0 +1,6 @@
+@EndUserText.label: 'service definition for orders'
+define service ZUI_ORDER {
+  expose ZPP_ORDER      as POrder;
+  expose ZPP_ORDER_ITEM as Item;
+  expose ZPP_ORDER_SCH  as Schedule;
+}

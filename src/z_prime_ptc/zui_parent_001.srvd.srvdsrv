@@ -1,0 +1,5 @@
+@EndUserText.label: 'parent table service definition'
+define service ZUI_PARENT_001 {
+  expose ZC_PARENT_001 as Parent;
+  expose ZC_CHILD_001  as Child;
+}

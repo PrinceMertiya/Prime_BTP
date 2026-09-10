@@ -1,0 +1,30 @@
+projection;
+strict ( 2 );
+
+define behavior for ZPP_ORDER //alias <alias_name>
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _Item { create; }
+}
+
+define behavior for ZPP_ORDER_ITEM //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _Order;
+  use association _Schedule { create; }
+}
+
+define behavior for ZPP_ORDER_SCH //alias <alias_name>
+{
+  use update;
+  use delete;
+
+
+  use association _Item;
+  use association _Order;
+}

@@ -1,0 +1,33 @@
+managed implementation in class zbp_i_parent_001 unique;
+strict ( 2 );
+
+
+define behavior for ZI_PARENT_001
+persistent table zparent_001
+lock master
+authorization master ( instance )
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+  field ( readonly ) ParentUuid;
+
+  determination GenerateUUID on modify { create; }
+
+  association _Child { create; }
+}
+
+define behavior for ZI_CHILD_001
+persistent table zchild_tab
+lock dependent by _Parent
+authorization dependent by _Parent
+{
+  update;
+  delete;
+
+  field ( readonly ) ChildUuid;
+  field ( readonly ) ParentUuid;
+
+  association _Parent;
+}

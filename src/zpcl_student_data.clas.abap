@@ -17,8 +17,8 @@ CLASS zpcl_student_data IMPLEMENTATION.
     DATA ls_student TYPE zpstudent.
 
     ls_student-client     = sy-mandt.
-    ls_student-student_id = '0000000002'.
-    ls_student-name       = 'ved bhai'.
+    ls_student-student_id = '0000000003'.
+    ls_student-name       = 'alay modi'.
     ls_student-city       = 'Gandhinagar'.
 
     ls_student-created_by = cl_abap_context_info=>get_user_technical_name( ).

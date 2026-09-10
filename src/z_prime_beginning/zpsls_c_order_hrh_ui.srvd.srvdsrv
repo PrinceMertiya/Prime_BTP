@@ -1,0 +1,4 @@
+@EndUserText.label: 'HRH serice definition'
+define service ZPSLS_C_ORDER_HRH_UI {
+  expose ZPSLS_C_ORDER_HRH;
+}

@@ -1,0 +1,91 @@
+@Metadata.layer: #CORE
+annotate view ZPSLS_C_ORDER_HRH
+    with 
+{
+    @UI.facet: [ 
+    { id: 'DocGeneral',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Documenet Details',
+      position: 10
+    } ]
+    
+    @UI: { 
+         
+         selectionField: [ { position: 10 } ],
+         lineItem: [ { position: 10 } ],
+         identification: [ { position: 10, label: 'Order ID' } ]   
+            }
+            
+            OrderId;
+    @UI: { 
+         
+         selectionField: [ { position: 20 } ],
+         lineItem: [ { position: 20 } ],
+         identification: [ { position: 20, label: 'Order Name' } ]   
+            }
+            
+            OrderName;
+    @UI: { 
+         
+         selectionField: [ { position: 30 } ],
+         lineItem: [ { position: 30 } ],
+         identification: [ { position: 30, label: 'Order Type' } ]   
+            }
+            
+            OrderType;
+    @UI: { 
+         
+         selectionField: [ { position: 40 } ],
+         lineItem: [ { position: 40 } ],
+         identification: [ { position: 40, label: 'Order Date' } ]   
+            }
+            
+            OrderDate;
+    @UI: { 
+         
+         selectionField: [ { position: 50 } ],
+         lineItem: [ { position: 50 } ],
+         identification: [ { position: 50, label: 'Status' } ]   
+            }
+            
+            Status;
+    
+    @UI: { 
+         
+         selectionField: [ { position: 60 } ],
+         lineItem: [ { position: 60 } ],
+         identification: [ { position: 60, label: 'Amount' } ]   
+            }
+            
+            Amount;
+            
+            
+    @UI: { 
+         
+         selectionField: [ { position: 70 } ],
+         lineItem: [ { position: 70 } ],
+         identification: [ { position: 70, label: 'Created By' } ]   
+            }
+            
+            CreatedBy;
+    @UI: { 
+         
+         selectionField: [ { position: 80 } ],
+         lineItem: [ { position: 80 } ],
+         identification: [ { position: 80, label: 'CreatedAt' } ]   
+            }
+            
+            CreatedAt;
+    @UI: { 
+         
+         selectionField: [ { position: 90 } ],
+         lineItem: [ { position: 90 } ],
+         identification: [ { position: 90, label: 'LastChangedAt' } ]   
+            }
+            
+            LastChangedAt;
+            
+   
+    
+}
