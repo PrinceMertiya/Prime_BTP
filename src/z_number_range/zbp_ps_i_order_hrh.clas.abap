@@ -1,0 +1,5 @@
+CLASS zbp_ps_i_order_hrh DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zps_i_order_hrh.
+ENDCLASS.
+
+CLASS zbp_ps_i_order_hrh IMPLEMENTATION.
+ENDCLASS.

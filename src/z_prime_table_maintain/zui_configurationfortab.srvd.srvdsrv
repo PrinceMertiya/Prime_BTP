@@ -1,0 +1,5 @@
+@ObjectModel.leadingEntity.name: 'ZI_ConfigurationForTab_S'
+define service ZUI_CONFIGURATIONFORTAB {
+  expose ZI_CONFIGURATIONFORTAB_S as ConfigurationForAll;
+  expose ZI_CONFIGURATIONFORTAB as ConfigurationForTab;
+}

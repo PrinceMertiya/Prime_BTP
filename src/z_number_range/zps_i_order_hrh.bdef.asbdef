@@ -1,0 +1,38 @@
+managed implementation in class zbp_ps_i_order_hrh unique;
+//strict ( 2 );
+
+define behavior for ZPS_I_ORDER_HRH //alias <alias_name>
+persistent table zps_order_hrh
+lock master
+authorization master ( global  )
+etag master LastChangedAt
+early numbering
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+
+  field ( readonly )
+    OrderId,
+    CreatedBy,
+    CreatedAt,
+    LastChangedAt;
+
+
+  mapping for zps_order_hrh
+  {
+    OrderId      = order_id;
+    OrderName    = order_name;
+    OrderType    = order_type;
+    OrderDate    = order_date;
+    Status       = status;
+    CukyField    = cuky_field;
+    Amount       = amount;
+    CreatedBy    = created_by;
+    CreatedAt    = created_at;
+    LastChangedAt = last_changed_at;
+  }
+
+
+}

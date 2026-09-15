@@ -1,0 +1,4 @@
+@EndUserText.label: 'TABLE DATA'
+define service ZPS_C_ORDER_HRH_UI {
+  expose ZPS_C_ORDER_HRH;
+}

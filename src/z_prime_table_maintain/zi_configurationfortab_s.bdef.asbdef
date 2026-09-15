@@ -1,0 +1,102 @@
+managed with additional save implementation in class ZBP_I_CONFIGURATIONFORTAB_S unique;
+strict ( 1 );
+with draft;
+define behavior for ZI_ConfigurationForTab_S alias ConfigurationForAll
+draft table ZSLS_CONFIG_D_S
+with unmanaged save
+lock master total etag LastChangedAtMax
+authorization master( global )
+{
+  field ( readonly )
+   SingletonID;
+
+  field ( features : instance )
+   TransportRequestID;
+
+  field ( notrigger )
+   SingletonID,
+   LastChangedAtMax;
+
+
+  update;
+  internal create;
+  internal delete;
+
+  draft action ( features : instance ) Edit with additional implementation;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+  action ( features : instance ) SelectCustomizingTransptReq parameter D_SelectCustomizingTransptReqP result [1] $self;
+
+  association _ConfigurationForTab { create ( features : instance ); with draft; }
+
+  validation ValidateTransportRequest on save ##NOT_ASSIGNED_TO_DETACT
+  {
+    create;
+    update;
+  }
+
+  side effects
+  {
+    action SelectCustomizingTransptReq affects
+        $self;
+  }
+
+}
+
+define behavior for ZI_ConfigurationForTab alias ConfigurationForTab ##UNMAPPED_FIELD[SingletonID]
+persistent table ZSLS_CONFIG_TAB
+draft table ZSLS_CONFIG_T_D
+etag master LocalLastLastchanged
+lock dependent by _ConfigurationForAll
+authorization dependent by _ConfigurationForAll
+{
+  field ( mandatory : create )
+   ConfigId;
+
+  field ( readonly )
+   SingletonID,
+   LocalCreatedBy,
+   LocalCreatedAt,
+   LocalLastChangedBy,
+   LocalLastLastchanged,
+   LastChangedAt;
+
+  field ( readonly : update )
+   ConfigId;
+
+  field ( notrigger )
+   SingletonID,
+   LocalCreatedBy,
+   LocalCreatedAt,
+   LocalLastChangedBy,
+   LocalLastLastchanged,
+   LastChangedAt;
+
+
+  update( features : global );
+  delete( features : global );
+
+  mapping for ZSLS_CONFIG_TAB
+  {
+    ConfigId = CONFIG_ID;
+    Description = DESCRIPTION;
+    ConfigActive = CONFIG_ACTIVE;
+    LocalCreatedBy = LOCAL_CREATED_BY;
+    LocalCreatedAt = LOCAL_CREATED_AT;
+    LocalLastChangedBy = LOCAL_LAST_CHANGED_BY;
+    LocalLastLastchanged = LOCAL_LAST_LASTCHANGED;
+    LastChangedAt = LAST_CHANGED_AT;
+  }
+
+  association _ConfigurationForAll { with draft; }
+
+  validation ValidateTransportRequest on save ##NOT_ASSIGNED_TO_DETACT
+  {
+    create;
+    update;
+    delete;
+  }
+
+}

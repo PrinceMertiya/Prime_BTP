@@ -1,0 +1,48 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'configuration for table', 
+    typeNamePlural: 'configuration for table', 
+    title: {
+      type: #STANDARD, 
+      value: 'ConfigId'
+    }
+  }
+}
+annotate view ZI_ConfigurationForTab with
+{
+  @UI.identification: [ {
+    position: 1 , 
+    label: 'ConfigId'
+  } ]
+  @UI.lineItem: [ {
+    position: 1 , 
+    label: 'ConfigId'
+  } ]
+  @UI.facet: [ {
+    id: 'ConfigurationForTab', 
+    purpose: #STANDARD, 
+    type: #IDENTIFICATION_REFERENCE, 
+    label: 'configuration for table', 
+    position: 1 
+  } ]
+  ConfigId;
+  
+  @UI.identification: [ {
+    position: 2 , 
+    label: 'Description'
+  } ]
+  @UI.lineItem: [ {
+    position: 2 , 
+    label: 'Description'
+  } ]
+  Description;
+  
+  @UI.identification: [ {
+    position: 3 
+  } ]
+  @UI.lineItem: [ {
+    position: 3 
+  } ]
+  ConfigActive;
+}

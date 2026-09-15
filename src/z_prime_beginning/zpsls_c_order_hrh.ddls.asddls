@@ -17,3 +17,4 @@ define root view entity ZPSLS_C_ORDER_HRH
     CreatedAt,
     LastChangedAt
 }
+
