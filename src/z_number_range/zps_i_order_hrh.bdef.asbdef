@@ -1,38 +1,71 @@
-managed implementation in class zbp_ps_i_order_hrh unique;
-//strict ( 2 );
-
-define behavior for ZPS_I_ORDER_HRH //alias <alias_name>
-persistent table zps_order_hrh
-lock master
-authorization master ( global  )
-etag master LastChangedAt
-early numbering
-{
-  create ( authorization : global );
-  update;
-  delete;
+    managed implementation in class zbp_ps_i_order_hrh unique;
+    strict ( 2 );
+    with draft;
 
 
-  field ( readonly )
-    OrderId,
-    CreatedBy,
-    CreatedAt,
-    LastChangedAt;
+    define behavior for ZPS_I_ORDER_HRH //alias <alias_name>
+    draft table zps_dt_order_hrh
+    persistent table zps_order_hrh
+    lock master total etag LastChangedAt
+    authorization master ( instance )
 
 
-  mapping for zps_order_hrh
-  {
-    OrderId      = order_id;
-    OrderName    = order_name;
-    OrderType    = order_type;
-    OrderDate    = order_date;
-    Status       = status;
-    CukyField    = cuky_field;
-    Amount       = amount;
-    CreatedBy    = created_by;
-    CreatedAt    = created_at;
-    LastChangedAt = last_changed_at;
-  }
+    early numbering
+    etag master LastChangedAt
+    {
+      create ( authorization : global );
+      update;
+      delete;
 
 
-}
+      validation ValidateAmount
+      on save { field Amount; }
+
+
+      determination CalculateStatus
+      on modify { field Amount; }
+
+
+      side effects
+      {
+        field Amount affects field Status;
+      }
+
+      //    action getData result [1] $self;
+
+      static factory action ( authorization : global ) getData [1];
+
+      draft action Edit;
+      draft action Activate optimized;
+      draft action Discard;
+      draft action Resume;
+      draft determine action Prepare;
+
+
+      field ( readonly )
+      OrderId,
+      CreatedBy,
+      CreatedAt,
+      LastChangedAt;
+
+
+
+
+
+
+      mapping for zps_order_hrh
+        {
+          OrderId       = order_id;
+          OrderName     = order_name;
+          OrderType     = order_type;
+          OrderDate     = order_date;
+          Status        = status;
+          CukyField     = cuky_field;
+          Amount        = amount;
+          CreatedBy     = created_by;
+          CreatedAt     = created_at;
+          LastChangedAt = last_changed_at;
+        }
+
+
+    }

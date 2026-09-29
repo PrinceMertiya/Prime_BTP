@@ -1,0 +1,21 @@
+CLASS zprime_car DEFINITION
+  PUBLIC
+  INHERITING from zprime_vehicle
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+    METHODS: display_type REDEFINITION.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zprime_car IMPLEMENTATION.
+  METHOD display_type.
+
+    rv_type = 'CAR'.
+
+  ENDMETHOD.
+
+ENDCLASS.

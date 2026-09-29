@@ -8,7 +8,7 @@ CLASS zcl_create_demo DEFINITION
     INTERFACES if_oo_adt_classrun .
   PROTECTED SECTION.
   PRIVATE SECTION.
-      CONSTANTS c_object    TYPE cl_numberrange_objects=>nr_attributes-object   VALUE 'ZNUM_RANGE'.
+      CONSTANTS c_object    TYPE cl_numberrange_objects=>nr_attributes-object   VALUE 'ZP_PRIME'.
 
     METHODS create_number_range
       IMPORTING io_out TYPE REF TO if_oo_adt_classrun_out.
@@ -23,14 +23,14 @@ CLASS zcl_create_demo IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
-*    create_number_range( out ).
-    draw_number( out ).
+   create_number_range( out ).
+*    draw_number( out ).
   ENDMETHOD.
 
   METHOD create_number_range.
     TRY.
         cl_numberrange_intervals=>create(
-          EXPORTING interval  = VALUE #( ( nrrangenr = '01' fromnumber = '1000000000' tonumber = '1999999999' procind = 'I' ) )
+          EXPORTING interval  = VALUE #( ( nrrangenr = '01' fromnumber = '2000000000' tonumber = '2999999999' procind = 'I' ) )
                     object    = c_object
           IMPORTING error     = DATA(ld_error)
                     error_inf = DATA(ls_error)

@@ -1,0 +1,4 @@
+@EndUserText.label: 'service definition'
+define service ZPS_C_EMPLOYEE_ui {
+  expose ZPS_C_EMPLOYEE;
+}

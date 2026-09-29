@@ -10,10 +10,17 @@ annotate entity ZPS_C_ORDER_HRH
       position: 10
     } ]
     
+    
+    @UI.lineItem: [ { type: #FOR_ACTION,
+                       dataAction: 'getData',
+                       label: 'Get Data',
+                       position: 10 } ] 
+    
     @UI: { 
+    
+        
          
          selectionField: [ { position: 10 } ],
-         lineItem: [ { position: 10 } ],
          identification: [ { position: 10, label: 'Order ID' } ]   
             }
             

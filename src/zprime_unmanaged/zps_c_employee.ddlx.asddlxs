@@ -1,0 +1,130 @@
+@Metadata.layer: #CORE
+annotate entity ZPS_C_EMPLOYEE
+    with 
+{
+    @UI.facet: [
+    {
+      id: 'EmpGeneral',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Employee Details',
+      position: 10
+    }
+  ]
+
+  @UI: {
+    selectionField: [ { position: 10 } ],
+    lineItem:       [ { position: 10 } ],
+    identification: [ { position: 10, label: 'Employee ID' } ]
+  }
+  EmployeeId;
+
+  @UI: {
+    selectionField: [ { position: 20 } ],
+    lineItem:       [ { position: 20 } ],
+    identification: [ { position: 20, label: 'First Name' } ]
+  }
+  FirstName;
+
+  @UI: {
+    selectionField: [ { position: 30 } ],
+    lineItem:       [ { position: 30 } ],
+    identification: [ { position: 30, label: 'Last Name' } ]
+  }
+  LastName;
+
+  @UI: {
+    selectionField: [ { position: 40 } ],
+    lineItem:       [ { position: 40 } ],
+    identification: [ { position: 40, label: 'Email' } ]
+  }
+  Email;
+
+  @UI: {
+    selectionField: [ { position: 50 } ],
+    lineItem:       [ { position: 50 } ],
+    identification: [ { position: 50, label: 'Mobile Number' } ]
+  }
+  MobileNumber;
+
+  @UI: {
+    selectionField: [ { position: 60 } ],
+    lineItem:       [ { position: 60 } ],
+    identification: [ { position: 60, label: 'Department' } ]
+  }
+  Department;
+
+  @UI: {
+    selectionField: [ { position: 70 } ],
+    lineItem:       [ { position: 70 } ],
+    identification: [ { position: 70, label: 'Designation' } ]
+  }
+  Designation;
+
+  @UI: {
+    selectionField: [ { position: 80 } ],
+    lineItem:       [ { position: 80 } ],
+    identification: [ { position: 80, label: 'Joining Date' } ]
+  }
+  JoiningDate;
+
+  @UI: {
+    selectionField: [ { position: 90 } ],
+    lineItem:       [ { position: 90 } ],
+    identification: [ { position: 90, label: 'Date Of Birth' } ]
+  }
+  DateOfBirth;
+
+  @UI: {
+    selectionField: [ { position: 100 } ],
+    lineItem:       [ { position: 100 } ],
+    identification: [ { position: 100, label: 'Status' } ]
+  }
+  Status;
+
+  @UI: {
+    selectionField: [ { position: 110 } ],
+    lineItem:       [ { position: 110 } ],
+    identification: [ { position: 110, label: 'Currency' } ]
+  }
+  CurrencyCode;
+
+  @UI: {
+    selectionField: [ { position: 120 } ],
+    lineItem:       [ { position: 120 } ],
+    identification: [ { position: 120, label: 'Salary' } ]
+  }
+  Salary;
+
+  @UI: {
+    lineItem:       [ { position: 130 } ],
+    identification: [ { position: 130, label: 'Address' } ]
+  }
+  Address;
+
+  @UI: {
+    lineItem:       [ { position: 140 } ],
+    identification: [ { position: 140, label: 'Created By' } ]
+  }
+  CreatedBy;
+
+  @UI: {
+    lineItem:       [  { position: 150 } ],
+    identification: [ { position: 150, label: 'Created At' } ]
+  }
+  CreatedAt;
+
+  @UI: {
+    lineItem:       [ { position: 160 } ],
+    identification: [ { position: 160, label: 'Last Changed By' } ]
+  }
+  LastChangedBy;
+
+  @UI: {
+    lineItem:       [ { position: 170 } ],
+    identification: [ { position: 170, label: 'Last Changed At' } ]
+  }
+  LastChangedAt;
+    
+}
+

@@ -1,0 +1,14 @@
+unmanaged implementation in class zbp_ps_i_employee unique;
+strict ( 2 );
+
+define behavior for ZPS_I_EMPLOYEE //alias <alias_name>
+//late numbering
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+}
