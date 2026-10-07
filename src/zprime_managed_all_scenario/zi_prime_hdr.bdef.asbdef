@@ -1,0 +1,129 @@
+managed implementation in class zbp_i_prime_hdr unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_PRIME_HDR //alias <alias_name>
+draft table zprime_dt_hdr
+persistent table zprime_hdr
+lock master total etag LocalLastChangedAt
+authorization master ( instance )
+early numbering
+
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) ReqId ,
+  Status,
+  TotalAmount,
+  CreatedBy,
+  CreatedAt,
+  LastChangedBy,
+  LastChangedAt,
+  LocalLastChangedAt;
+
+
+  action ( features : instance ) Approve result [1] $self;
+action ( features : instance ) Reject  result [1] $self;
+
+
+  action ( features : instance ) Submit result [1] $self;
+  action CopyRequest result[1] $self;
+
+
+
+ determination CalculateStatus
+     on modify { field TotalAmount; }
+
+
+side effects
+      {
+        field TotalAmount affects field Status;
+      }
+
+
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+
+  association _Item { create; }
+
+
+
+
+
+
+
+
+  mapping for zprime_hdr
+    {
+      ReqId              = req_id;
+      ReqType            = req_type;
+      Vendor             = vendor;
+      Status             = status;
+      Category          = category;
+      CukyField          = cuky_field;
+      TotalAmount        = total_amount;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}
+
+define behavior for ZI_PRIME_ITEM
+persistent table zprime_item
+draft table zprime_dt_item
+lock dependent by _Header
+authorization dependent by _Header
+
+early numbering
+
+etag master LocalLastChangedAt
+{
+
+  update;
+  delete;
+
+  field ( readonly ) ReqId, ItemId ;
+
+  validation validateItemData on save { create; update; }
+
+
+  determination CalculatingAmount
+  on modify { field Quantity; field Price; }
+
+  determination CalculateTotalAmount
+  on modify { field Amount; }
+
+
+side effects
+{
+  field Quantity affects field Amount;
+  field Price    affects field Amount;
+  field Amount affects entity _Header;
+}
+
+
+  association _Header;
+  mapping for zprime_item
+    {
+      ReqId              = req_id;
+      ItemId             = item_id;
+      Material           = material;
+      Quantity           = quantity;
+      Price              = price;
+      Amount             = amount;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}

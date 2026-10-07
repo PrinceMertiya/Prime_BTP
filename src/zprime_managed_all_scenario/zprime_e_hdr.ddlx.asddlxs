@@ -1,0 +1,119 @@
+@Metadata.layer: #CORE
+
+annotate entity ZC_PRIME_HDR with
+{
+
+  @UI.facet: [
+    {
+      id: 'HeaderInfo',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Request Details',
+      position: 10
+    },
+    {
+      id: 'ItemFacet',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_Item',
+      label: 'Items',
+      position: 20
+    }
+  ]
+
+  //  @UI: {
+  //      lineItem:       [ { position: 10 } ],
+  //      identification: [ { position: 10 , label: 'Request Id'} ],
+  //      selectionField: [ { position: 10 } ]
+  //  }
+  //  ReqId;
+
+  @UI: {
+      lineItem:       [ { position: 10 } ],
+      identification: [
+          { position: 10 , label: 'Request Id' },
+          {
+            type: #FOR_ACTION,
+            dataAction: 'Submit',
+            label: 'Submit',
+            position: 90
+          },
+          {
+  type: #FOR_ACTION,
+  dataAction: 'CopyRequest',
+  label: 'Copy Request',
+  position: 95
+  },{
+  type: #FOR_ACTION,
+  dataAction: 'Approve',
+  label: 'Approve',
+  position: 100
+  },{
+  type: #FOR_ACTION,
+  dataAction: 'Reject',
+  label: 'Reject',
+  position: 105
+  }
+      ],
+      selectionField: [ { position: 10 } ]
+  }
+  ReqId;
+
+  @UI: {
+      lineItem:       [ { position: 20 } ],
+      identification: [ { position: 20 , label: 'Request Type'} ],
+      selectionField: [ { position: 20 } ]
+  }
+  ReqType;
+
+  @UI: {
+      lineItem:       [ { position: 30 } ],
+      identification: [ { position: 30 , label: 'Vendor' } ],
+      selectionField: [ { position: 30 } ]
+  }
+  Vendor;
+
+  @UI: {
+      lineItem:       [ { position: 40 } ],
+      identification: [ { position: 40 , label: 'Status' } ]
+  }
+  Status;
+
+
+  @UI: {
+    lineItem: [
+      {
+        position : 50,
+        criticality : 'Criticality'
+      }
+    ],
+    identification: [
+      {
+        position : 50,
+        label : 'Category',
+        criticality : 'Criticality'
+      }
+    ]
+  }
+  category;
+
+
+  @UI: {
+      lineItem:       [ { position: 60 } ],
+      identification: [ { position: 60 , label: 'TotalAmount'} ]
+  }
+  TotalAmount;
+
+  @UI: {
+      identification: [ { position: 70 } ]
+  }
+  CreatedBy;
+
+  @UI: {
+      identification: [ { position: 80 } ]
+  }
+  CreatedAt;
+
+
+
+}

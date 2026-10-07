@@ -1,0 +1,5 @@
+@EndUserText.label: 'service definition Prime HDR'
+define service ZUI_PRIME {
+  expose ZC_PRIME_HDR;
+  expose ZC_PRIME_ITEM;
+}
