@@ -1,0 +1,6 @@
+@EndUserText.label: 'Sevices for kpt'
+define service ZUI_PRIME_KPI {
+  expose ZC_PRIME_KPI_CNT;
+  expose ZC_PRIME_KPI_STATUS;
+  expose ZC_PRIME_KPI_AMOUNT;
+}

@@ -59,13 +59,30 @@ annotate entity ZC_PRIME_HDR with
   }
   ReqId;
 
+
+  @Consumption.valueHelpDefinition: [
+      {
+      entity: {
+      name: 'ZI_REQUEST_RT',
+      element: 'ReqType'
+      }
+      }
+      ]
+
   @UI: {
       lineItem:       [ { position: 20 } ],
       identification: [ { position: 20 , label: 'Request Type'} ],
       selectionField: [ { position: 20 } ]
   }
   ReqType;
-
+  @Consumption.valueHelpDefinition: [
+      {
+      entity: {
+      name: 'ZI_VENDOR_VH1',
+      element: 'Vendor'
+      }
+      }
+      ]
   @UI: {
       lineItem:       [ { position: 30 } ],
       identification: [ { position: 30 , label: 'Vendor' } ],
@@ -103,6 +120,12 @@ annotate entity ZC_PRIME_HDR with
       identification: [ { position: 60 , label: 'TotalAmount'} ]
   }
   TotalAmount;
+
+
+  @UI: {
+  identification: [ { position: 65  , label: 'Reason' }]
+  }
+   RejectReason;
 
   @UI: {
       identification: [ { position: 70 } ]

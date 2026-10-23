@@ -1,0 +1,10 @@
+@Metadata.layer: #CORE
+
+annotate entity ZC_PRIME_KPI_STATUS with
+{
+  @UI.lineItem: [{ position: 10 }]
+  Status;
+
+  @UI.lineItem: [{ position: 20 }]
+  RequestCount;
+}

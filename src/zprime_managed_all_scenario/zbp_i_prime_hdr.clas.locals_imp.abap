@@ -33,7 +33,8 @@ CLASS lhc_ZI_PRIME_HDR DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS Approve FOR MODIFY
        keys FOR ACTION zi_prime_hdr~Approve RESULT result.
     METHODS Reject FOR MODIFY
-       keys FOR ACTION zi_prime_hdr~Reject RESULT result.
+      keys FOR ACTION ZI_PRIME_HDR~Reject RESULT result.
+
 
 
 
@@ -42,48 +43,79 @@ ENDCLASS.
 CLASS lhc_ZI_PRIME_HDR IMPLEMENTATION.
 
   METHOD get_instance_authorizations.
-  ENDMETHOD.
-
-  METHOD get_global_authorizations.
-  ENDMETHOD.
-
-METHOD get_instance_features.
 
   READ ENTITIES OF zi_prime_hdr IN LOCAL MODE
     ENTITY zi_prime_hdr
-    FIELDS ( Status )
+    FIELDS ( CreatedBy )
     WITH CORRESPONDING #( keys )
     RESULT DATA(lt_hdr).
+
+  DATA(lv_user) = sy-uname.
 
   result = VALUE #(
     FOR ls_hdr IN lt_hdr
     (
       %tky = ls_hdr-%tky
 
-
-
-      " Custom actions
-      %action-Submit =
+      %update =
         COND #(
-          WHEN ls_hdr-status = 'DRAFT'
-          THEN if_abap_behv=>fc-o-enabled
-          ELSE if_abap_behv=>fc-o-disabled )
+          WHEN ls_hdr-CreatedBy = lv_user
+          THEN if_abap_behv=>auth-allowed
+          ELSE if_abap_behv=>auth-unauthorized
+        )
 
-      %action-Approve =
+      %delete =
         COND #(
-          WHEN ls_hdr-status = 'SUBMITTED'
-          THEN if_abap_behv=>fc-o-enabled
-          ELSE if_abap_behv=>fc-o-disabled )
-
-      %action-Reject =
-        COND #(
-          WHEN ls_hdr-status = 'SUBMITTED'
-          THEN if_abap_behv=>fc-o-enabled
-          ELSE if_abap_behv=>fc-o-disabled )
+          WHEN ls_hdr-CreatedBy = lv_user
+          THEN if_abap_behv=>auth-allowed
+          ELSE if_abap_behv=>auth-unauthorized
+        )
     )
   ).
 
 ENDMETHOD.
+
+  METHOD get_global_authorizations.
+  ENDMETHOD.
+
+  METHOD get_instance_features.
+
+    READ ENTITIES OF zi_prime_hdr IN LOCAL MODE
+      ENTITY zi_prime_hdr
+      FIELDS ( Status )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_hdr).
+
+    result = VALUE #(
+      FOR ls_hdr IN lt_hdr
+      (
+        %tky = ls_hdr-%tky
+
+
+
+        " Custom actions
+        %action-Submit =
+          COND #(
+            WHEN ls_hdr-status IS INITIAL
+              OR ls_hdr-status = 'DRAFT'
+            THEN if_abap_behv=>fc-o-enabled
+            ELSE if_abap_behv=>fc-o-disabled )
+
+        %action-Approve =
+          COND #(
+            WHEN ls_hdr-status = 'SUBMITTED'
+            THEN if_abap_behv=>fc-o-enabled
+            ELSE if_abap_behv=>fc-o-disabled )
+
+        %action-Reject =
+          COND #(
+            WHEN ls_hdr-status = 'SUBMITTED'
+            THEN if_abap_behv=>fc-o-enabled
+            ELSE if_abap_behv=>fc-o-disabled )
+      )
+    ).
+
+  ENDMETHOD.
 
 
 
@@ -313,29 +345,66 @@ ENDMETHOD.
     ENDLOOP.
 
   ENDMETHOD.
-  METHOD Submit.
-
-    MODIFY ENTITIES OF zi_prime_hdr IN LOCAL MODE
-      ENTITY zi_prime_hdr
-      UPDATE FIELDS ( Status )
-      WITH VALUE #(
-        FOR key IN keys
-        (
-          %tky   = key-%tky
-          Status = 'SUBMITTED'
-        )
-      ).
+  METHOD submit.
 
     READ ENTITIES OF zi_prime_hdr IN LOCAL MODE
-  ENTITY zi_prime_hdr
-  ALL FIELDS
-  WITH CORRESPONDING #( keys )
-  RESULT DATA(lt_result).
+      ENTITY zi_prime_hdr
+      ALL FIELDS
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_hdr).
+
+    LOOP AT lt_hdr INTO DATA(ls_hdr).
+
+      READ ENTITIES OF zi_prime_hdr IN LOCAL MODE
+        ENTITY zi_prime_hdr BY \_Item
+        ALL FIELDS
+        WITH VALUE #(
+          (
+            %tky = ls_hdr-%tky
+          )
+        )
+        RESULT DATA(lt_items).
+
+      IF lt_items IS INITIAL.
+
+        APPEND VALUE #(
+          %tky = ls_hdr-%tky
+        ) TO failed-zi_prime_hdr.
+
+        APPEND VALUE #(
+          %tky = ls_hdr-%tky
+          %msg = new_message_with_text(
+                   severity = if_abap_behv_message=>severity-error
+                   text     = 'Please add at least one item before submit'
+                 )
+        ) TO reported-zi_prime_hdr.
+
+        CONTINUE.
+
+      ENDIF.
+
+      MODIFY ENTITIES OF zi_prime_hdr IN LOCAL MODE
+        ENTITY zi_prime_hdr
+        UPDATE FIELDS ( Status )
+        WITH VALUE #(
+          (
+            %tky   = ls_hdr-%tky
+            Status = 'SUBMITTED'
+          )
+        ).
+
+    ENDLOOP.
+
+    READ ENTITIES OF zi_prime_hdr IN LOCAL MODE
+      ENTITY zi_prime_hdr
+      ALL FIELDS
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_result).
 
     result = VALUE #(
       FOR ls IN lt_result
       (
-        %tky = ls-%tky
+        %tky   = ls-%tky
         %param = ls
       )
     ).
@@ -455,33 +524,71 @@ ENDMETHOD.
 
   ENDMETHOD.
 
+*  METHOD Reject.
+*
+*    MODIFY ENTITIES OF zi_prime_hdr IN LOCAL MODE
+*      ENTITY zi_prime_hdr
+*      UPDATE FIELDS ( Status )
+*      WITH VALUE #(
+*        FOR key IN keys
+*        (
+*          %tky   = key-%tky
+*          Status = 'REJECTED'
+*        )
+*      ).
+*    READ ENTITIES OF zi_prime_hdr IN LOCAL MODE
+*  ENTITY zi_prime_hdr
+*  ALL FIELDS
+*  WITH CORRESPONDING #( keys )
+*  RESULT DATA(lt_result).
+*
+*    result = VALUE #(
+*      FOR ls IN lt_result
+*      (
+*        %tky = ls-%tky
+*        %param = ls
+*      )
+*    ).
+*
+*  ENDMETHOD.
+*
   METHOD Reject.
 
-    MODIFY ENTITIES OF zi_prime_hdr IN LOCAL MODE
-      ENTITY zi_prime_hdr
-      UPDATE FIELDS ( Status )
-      WITH VALUE #(
-        FOR key IN keys
-        (
-          %tky   = key-%tky
-          Status = 'REJECTED'
-        )
-      ).
-    READ ENTITIES OF zi_prime_hdr IN LOCAL MODE
-  ENTITY zi_prime_hdr
-  ALL FIELDS
-  WITH CORRESPONDING #( keys )
-  RESULT DATA(lt_result).
+  LOOP AT keys INTO DATA(ls_reject_key).
 
-    result = VALUE #(
-      FOR ls IN lt_result
+    IF ls_reject_key-%param-Reason IS INITIAL.
+
+      APPEND VALUE #(
+        %tky = ls_reject_key-%tky
+      ) TO failed-zi_prime_hdr.
+
+      APPEND VALUE #(
+        %tky = ls_reject_key-%tky
+        %msg = new_message_with_text(
+                 severity = if_abap_behv_message=>severity-error
+                 text = 'Please enter rejection reason'
+               )
+      ) TO reported-zi_prime_hdr.
+
+      RETURN.
+
+    ENDIF.
+
+  ENDLOOP.
+
+  MODIFY ENTITIES OF zi_prime_hdr IN LOCAL MODE
+    ENTITY zi_prime_hdr
+    UPDATE FIELDS ( Status RejectReason )
+    WITH VALUE #(
+      FOR ls_key IN keys
       (
-        %tky = ls-%tky
-        %param = ls
+        %tky         = ls_key-%tky
+        Status       = 'REJECTED'
+        RejectReason = ls_key-%param-Reason
       )
     ).
 
-  ENDMETHOD.
+ENDMETHOD.
 
 ENDCLASS.
 
@@ -573,7 +680,6 @@ CLASS lhc_ZI_PRIME_ITEM IMPLEMENTATION.
 
       ELSE.
 
-        " Material mandatory
         APPEND VALUE #(
           %tky = ls_item-%tky
         ) TO failed-zi_prime_item.

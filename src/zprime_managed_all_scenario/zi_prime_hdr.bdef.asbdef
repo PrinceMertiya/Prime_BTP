@@ -14,7 +14,7 @@ etag master LocalLastChangedAt
   create ( authorization : global );
   update;
   delete;
-  field ( readonly ) ReqId ,
+  field ( readonly ) ReqId,
   Status,
   TotalAmount,
   CreatedBy,
@@ -25,22 +25,25 @@ etag master LocalLastChangedAt
 
 
   action ( features : instance ) Approve result [1] $self;
-action ( features : instance ) Reject  result [1] $self;
+  action ( features : instance )
+  Reject
+    parameter ZPS_AB_REJECT
+    result [1] $self;
 
 
   action ( features : instance ) Submit result [1] $self;
-  action CopyRequest result[1] $self;
+  action CopyRequest result [1] $self;
 
 
 
- determination CalculateStatus
-     on modify { field TotalAmount; }
+  determination CalculateStatus
+  on modify { field TotalAmount; }
 
 
-side effects
-      {
-        field TotalAmount affects field Status;
-      }
+  side effects
+  {
+    field TotalAmount affects field Status;
+  }
 
 
 
@@ -53,20 +56,14 @@ side effects
 
   association _Item { create; }
 
-
-
-
-
-
-
-
   mapping for zprime_hdr
     {
       ReqId              = req_id;
       ReqType            = req_type;
       Vendor             = vendor;
       Status             = status;
-      Category          = category;
+      Category           = category;
+      RejectReason = reject_reason;
       CukyField          = cuky_field;
       TotalAmount        = total_amount;
       CreatedBy          = created_by;
@@ -91,7 +88,7 @@ etag master LocalLastChangedAt
   update;
   delete;
 
-  field ( readonly ) ReqId, ItemId ;
+  field ( readonly ) ReqId, ItemId;
 
   validation validateItemData on save { create; update; }
 
@@ -103,12 +100,12 @@ etag master LocalLastChangedAt
   on modify { field Amount; }
 
 
-side effects
-{
-  field Quantity affects field Amount;
-  field Price    affects field Amount;
-  field Amount affects entity _Header;
-}
+  side effects
+  {
+    field Quantity affects field Amount;
+    field Price affects field Amount;
+    field Amount affects entity _Header;
+  }
 
 
   association _Header;

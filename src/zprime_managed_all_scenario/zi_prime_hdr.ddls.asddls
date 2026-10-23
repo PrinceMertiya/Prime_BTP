@@ -5,15 +5,17 @@ define root view entity ZI_PRIME_HDR
   as select from zprime_hdr
   composition [0..*] of ZI_PRIME_ITEM as _Item
 
-  //composition of target_data_source_name as _association_name
 {
       @EndUserText.label: 'Request ID'
-  key req_id                as ReqId,
+      key req_id                as ReqId,
       @EndUserText.label: 'Request Type'
       req_type              as ReqType,
+
+
       vendor                as Vendor,
       status                as Status,
       category              as category,
+      reject_reason  as RejectReason,
       cuky_field            as CukyField,
       @Semantics.amount.currencyCode : 'CukyField'
       total_amount          as TotalAmount,
@@ -24,6 +26,8 @@ define root view entity ZI_PRIME_HDR
       when category = 'VIP' then 3
       else 0
       end                   as Criticality,
+      
+      
 
       @Semantics.user.createdBy: true
       created_by            as CreatedBy,

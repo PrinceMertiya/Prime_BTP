@@ -1,0 +1,10 @@
+@Metadata.layer: #CORE
+
+annotate entity ZC_PRIME_KPI_CNT with
+{
+  @UI.lineItem: [{ position: 10 }]
+  @UI.dataPoint: {
+      title: 'Total Requests'
+  }
+  TotalRequests;
+}

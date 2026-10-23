@@ -12,6 +12,7 @@ define root view entity ZC_PRIME_HDR as projection on ZI_PRIME_HDR
     CukyField,
     @Semantics.amount.currencyCode: 'CukyField'
     TotalAmount,
+    RejectReason,
     Criticality,
     CreatedBy,
     CreatedAt,
@@ -21,3 +22,4 @@ define root view entity ZC_PRIME_HDR as projection on ZI_PRIME_HDR
     /* Associations */
     _Item : redirected to composition child ZC_PRIME_ITEM
 }
+ 
