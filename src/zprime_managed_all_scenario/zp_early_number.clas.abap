@@ -1,4 +1,4 @@
-CLASS zp_early_number DEFINITION
+.CLASS zp_early_number DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .

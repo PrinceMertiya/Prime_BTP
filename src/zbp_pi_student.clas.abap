@@ -1,5 +1,13 @@
-CLASS zbp_pi_student DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zpi_student.
+class ZBP_PI_STUDENT definition
+  public
+  create private .
+
+public section.
+protected section.
+private section.
 ENDCLASS.
 
-CLASS zbp_pi_student IMPLEMENTATION.
+
+
+CLASS ZBP_PI_STUDENT IMPLEMENTATION.
 ENDCLASS.

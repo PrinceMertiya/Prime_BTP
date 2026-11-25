@@ -1,21 +1,13 @@
-CLASS zprime_vehicle DEFINITION
-  PUBLIC
-  ABSTRACT
-  CREATE PUBLIC .
+class ZPRIME_VEHICLE definition
+  public
+  create private .
 
-  PUBLIC SECTION.
-
-    DATA mv_name TYPE string.
-
-    methods display_type
-        ABSTRACT
-        RETURNING VALUE(rv_type) type string.
-
-  PROTECTED SECTION.
-  PRIVATE SECTION.
+public section.
+protected section.
+private section.
 ENDCLASS.
 
 
 
-CLASS zprime_vehicle IMPLEMENTATION.
+CLASS ZPRIME_VEHICLE IMPLEMENTATION.
 ENDCLASS.

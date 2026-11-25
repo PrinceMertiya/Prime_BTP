@@ -1,41 +1,13 @@
-CLASS zpcl_student_data DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC.
+class ZPCL_STUDENT_DATA definition
+  public
+  create private .
 
-  PUBLIC SECTION.
-    INTERFACES if_oo_adt_classrun.
-
+public section.
+protected section.
+private section.
 ENDCLASS.
 
 
 
-CLASS zpcl_student_data IMPLEMENTATION.
-
-  METHOD if_oo_adt_classrun~main.
-
-    DATA ls_student TYPE zpstudent.
-
-    ls_student-client     = sy-mandt.
-    ls_student-student_id = '0000000003'.
-    ls_student-name       = 'alay modi'.
-    ls_student-city       = 'Gandhinagar'.
-
-    ls_student-created_by = cl_abap_context_info=>get_user_technical_name( ).
-
-    GET TIME STAMP FIELD ls_student-created_at.
-
-    ls_student-changed_by = ls_student-created_by.
-    ls_student-changed_at = ls_student-created_at.
-
-    INSERT zpstudent FROM @ls_student.
-
-    IF sy-subrc = 0.
-      out->write( 'Record inserted successfully' ).
-    ELSE.
-      out->write( |Insert failed. SY-SUBRC = { sy-subrc }| ).
-    ENDIF.
-
-  ENDMETHOD.
-
+CLASS ZPCL_STUDENT_DATA IMPLEMENTATION.
 ENDCLASS.

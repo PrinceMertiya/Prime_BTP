@@ -1,19 +1,13 @@
-CLASS zp_program_class DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC.
+class ZP_PROGRAM_CLASS definition
+  public
+  create private .
 
-  PUBLIC SECTION.
-    INTERFACES if_oo_adt_classrun.
+public section.
+protected section.
+private section.
 ENDCLASS.
 
 
-CLASS zp_program_class IMPLEMENTATION.
 
-  METHOD if_oo_adt_classrun~main.
-
-    out->write( 'chup' ).
-
-  ENDMETHOD.
-
+CLASS ZP_PROGRAM_CLASS IMPLEMENTATION.
 ENDCLASS.

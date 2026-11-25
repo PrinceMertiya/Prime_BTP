@@ -1,0 +1,4 @@
+@EndUserText.label: 'ad'
+define service Zprime_ui {
+  expose ZC_PRIME_HDR as Header;
+}

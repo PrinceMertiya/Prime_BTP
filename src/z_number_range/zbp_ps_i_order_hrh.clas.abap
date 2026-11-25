@@ -1,5 +1,13 @@
-CLASS zbp_ps_i_order_hrh DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zps_i_order_hrh.
+class ZBP_PS_I_ORDER_HRH definition
+  public
+  create private .
+
+public section.
+protected section.
+private section.
 ENDCLASS.
 
-CLASS zbp_ps_i_order_hrh IMPLEMENTATION.
+
+
+CLASS ZBP_PS_I_ORDER_HRH IMPLEMENTATION.
 ENDCLASS.

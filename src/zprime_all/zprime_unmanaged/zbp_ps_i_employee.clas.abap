@@ -1,13 +1,13 @@
-CLASS zbp_ps_i_employee DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zps_i_employee.
+class ZBP_PS_I_EMPLOYEE definition
+  public
+  create private .
 
-CLASS-DATA: lt_insert TYPE TABLE OF zps_employee,
-            lt_update TYPE TABLE OF zps_employee,
-            lt_delete TYPE TABLE OF zps_employee.
-
-
-
-
+public section.
+protected section.
+private section.
 ENDCLASS.
 
-CLASS zbp_ps_i_employee IMPLEMENTATION.
+
+
+CLASS ZBP_PS_I_EMPLOYEE IMPLEMENTATION.
 ENDCLASS.

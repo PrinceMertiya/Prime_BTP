@@ -1,0 +1,5 @@
+@EndUserText.label: 'service definition Prime HDR'
+define service ZPRIME_SD {
+  expose ZPRIME_C_HDR_1  as Header;
+  expose ZPRIME_C_ITEM_1 as Item;
+}

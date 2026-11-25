@@ -1,0 +1,32 @@
+projection;
+strict ( 2 );
+use draft;
+use side effects;
+
+define behavior for ZPRIME_C_HDR_1 //alias <alias_name>
+{
+  use create;
+  use update;
+  use delete;
+
+  use action Approve;
+  use action Reject;
+  use action Submit;
+  use action CopyRequest;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use association _Item { create; with draft; }
+}
+
+define behavior for ZPRIME_C_ITEM_1 //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+}

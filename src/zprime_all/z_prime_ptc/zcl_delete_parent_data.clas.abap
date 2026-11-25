@@ -1,27 +1,13 @@
-CLASS zcl_delete_parent_data DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC.
+class ZCL_DELETE_PARENT_DATA definition
+  public
+  create private .
 
-  PUBLIC SECTION.
-    INTERFACES if_oo_adt_classrun.
+public section.
+protected section.
+private section.
 ENDCLASS.
 
-CLASS zcl_delete_parent_data IMPLEMENTATION.
 
-  METHOD if_oo_adt_classrun~main.
 
-    DELETE FROM zchild_tab
-      WHERE parent_uuid IS INITIAL
-         OR child_uuid  IS INITIAL.
-
-    DELETE FROM zparent_001
-      WHERE parent_uuid IS INITIAL.
-
-    COMMIT WORK.
-
-    out->write( |Deleted records: { sy-dbcnt }| ).
-
-  ENDMETHOD.
-
+CLASS ZCL_DELETE_PARENT_DATA IMPLEMENTATION.
 ENDCLASS.

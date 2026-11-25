@@ -5,4 +5,3 @@ INTERFACE zif_employee
     RETURNING VALUE(rv_details) TYPE string.
 
 ENDINTERFACE.
-
