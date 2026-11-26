@@ -1,0 +1,70 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Sales Order',
+    typeNamePlural: 'Sales Orders',
+    title: { type: #STANDARD, value: 'OrderId' },
+    description: { type: #STANDARD, value: 'CustomerId' }
+  }
+}
+annotate view ZC_SO_HDR with
+{
+  @UI.facet: [
+    { id: 'GeneralInfo', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Order Details', position: 10 },
+    { id: 'Items',       purpose: #STANDARD, type: #LINEITEM_REFERENCE,       label: 'Line Items',    position: 20, targetElement: '_Item' },
+    { id: 'Partners',    purpose: #STANDARD, type: #LINEITEM_REFERENCE,       label: 'Partners',      position: 30, targetElement: '_Partner' }
+  ]
+
+  @EndUserText.label: 'Order ID'
+  @UI: { lineItem: [
+           { position: 10, importance: #HIGH },
+           { type: #FOR_ACTION, dataAction: 'SubmitOrder',   label: 'Submit' },
+           { type: #FOR_ACTION, dataAction: 'ReleaseOrder',  label: 'Release' },
+           { type: #FOR_ACTION, dataAction: 'RejectOrder',   label: 'Reject' },
+           { type: #FOR_ACTION, dataAction: 'DeepCopyOrder', label: 'Copy Order' }
+         ],
+         identification: [
+           { position: 10 },
+           { type: #FOR_ACTION, dataAction: 'SubmitOrder',   label: 'Submit' },
+           { type: #FOR_ACTION, dataAction: 'ReleaseOrder',  label: 'Release' },
+           { type: #FOR_ACTION, dataAction: 'RejectOrder',   label: 'Reject' }
+         ],
+         selectionField: [{ position: 10 }] }
+  OrderId;
+
+  @EndUserText.label: 'Customer ID'
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }], selectionField: [{ position: 20 }] }
+  CustomerId;
+
+  @EndUserText.label: 'Sales Organization'
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }], selectionField: [{ position: 30 }] }
+  SalesOrg;
+
+  @EndUserText.label: 'Order Status'
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }], selectionField: [{ position: 40 }] }
+  Status;
+
+  @EndUserText.label: 'Priority'
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  Priority;
+
+  @EndUserText.label: 'Net Value'
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+  NetValue;
+
+  @EndUserText.label: 'Currency'
+  @UI: { identification: [{ position: 65 }] }
+  CukyField;
+
+  @EndUserText.label: 'Total Weight'
+  @UI: { lineItem: [{ position: 70 }], identification: [{ position: 70 }] }
+  TotalWeight;
+
+  @EndUserText.label: 'Weight Unit'
+  @UI: { identification: [{ position: 75 }] }
+  WeightUnit;
+
+  @EndUserText.label: 'Rejection Reason'
+  @UI: { identification: [{ position: 80 }] }
+  RejectReason;
+}

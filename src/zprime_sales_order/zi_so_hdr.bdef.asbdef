@@ -1,0 +1,401 @@
+managed implementation in class zbp_i_so_hdr unique;
+strict ( 2 );
+with draft;
+
+/* ===================================================================== */
+/* 1. ROOT ENTITY: SALES ORDER HEADER                                    */
+/* ===================================================================== */
+
+define behavior for ZI_SO_HDR alias SalesOrderHeader
+persistent table zso_hdr
+draft table zso_dt_hdr
+lock master total etag LastChangedAt
+authorization master ( instance )
+early numbering
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) OrderId,
+                     Status,
+                     Priority,
+                     NetValue,
+                     TotalWeight,
+                     RejectReason,
+                     CreatedBy,
+                     CreatedAt,
+                     LastChangedBy,
+                     LastChangedAt,
+                     LocalLastChangedAt;
+
+  field ( mandatory ) CustomerId, SalesOrg, CukyField;
+
+  /* workflow & factory Actions */
+
+  action( features : instance ) SubmitOrder result [1] $self;
+  action( features : instance ) ReleaseOrder result [1] $self;
+  action( features : instance ) RejectOrder parameter ZPS_SO_REJECT result [1] $self;
+  action DeepCopyOrder result [1] $self;
+
+  /* Determination  */
+
+  determination setDefaultsOnCreate on modify { create; }
+  determination determinePriority on modify { field NetValue; }
+
+  /* Validation  */
+
+  validation validateOrderBeforeSave on save { create; update; }
+
+  /* Side Effects  */
+
+  side effects{
+
+    field NetValue affects field Priority;
+    entity _Item affects field NetValue, field TotalWeight , field Priority;
+
+  }
+
+  /* Draft Actions */
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation validateOrderBeforeSave;
+    validation SalesOrderItem~validateItemData;
+    validation DeliverySchedule~validateScheduleQty;
+  }
+
+
+
+  association _Item { create; with draft; }
+  association _Partner { create; with draft; }
+
+
+  mapping for zso_hdr
+  {
+    OrderId            = order_id;
+    CustomerId         = customer_id;
+    SalesOrg           = sales_org;
+    Status             = status;
+    Priority           = priority;
+    CukyField          = cuky_field;
+    NetValue           = net_value;
+    WeightUnit         = uzeit_weight_unit;
+    TotalWeight        = total_weight;
+    RejectReason       = reject_reason;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+/* ===================================================================== */
+/* 2. CHILD ENTITY: SALES ORDER LINE ITEM                                */
+/* ===================================================================== */
+
+define behavior for ZI_SO_ITEM1 alias SalesOrderItem
+draft table zso_dt_item
+persistent table zso_item
+lock dependent by _Header
+authorization dependent by _Header
+early numbering
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( readonly ) OrderId, ItemId, ItemAmount, ItemWeight, CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
+  field ( mandatory ) Material, Quantity, Uom, UnitPrice;
+
+   /* Determinations */
+  determination calcItemAmount on modify { field Quantity, UnitPrice; }
+  determination updateHeaderTotals on modify { create; delete; field ItemAmount, ItemWeight; }
+
+  /* Validations */
+  validation validateItemData on save { create; update; field Material, Quantity, UnitPrice; }
+
+  /* Side Effects */
+  side effects
+  {
+    field Quantity affects field ItemAmount;
+    field UnitPrice affects field ItemAmount;
+    field ItemAmount affects entity _Header;
+    field ItemWeight affects entity _Header;
+    entity _Cond affects field ItemAmount, entity _Header;
+    entity _Sched affects field ItemWeight, entity _Header;
+  }
+
+
+
+
+
+
+  association _Header{ with draft; }
+  association _Cond { create; with draft; }
+  association _Sched { create; with draft; }
+
+  mapping for zso_item
+  {
+    OrderId            = order_id;
+    ItemId             = item_id;
+    Material           = material;
+    Uom                = uom;
+    Quantity           = quantity;
+    CukyField          = cuky_field;
+    UnitPrice          = unit_price;
+    ItemAmount         = item_amount;
+    WeightUnit         = weight_unit;
+    ItemWeight         = item_weight;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+
+/* ===================================================================== */
+/* 3. GRANDCHILD ENTITY: PRICING CONDITIONS                              */
+/* ===================================================================== */
+
+define behavior for ZI_SO_COND alias PricingCondition
+persistent table zso_cond
+draft table zso_dt_cond
+lock dependent by _Header
+authorization dependent by _Header
+early numbering
+etag master LocalLastChangedAt
+
+{
+  update;
+  delete;
+  field ( readonly ) OrderId,
+                     ItemId,
+                     CondId,
+                     CondValue,
+                     CreatedBy,
+                     CreatedAt,
+                     LastChangedBy,
+                     LastChangedAt,
+                     LocalLastChangedAt;
+
+  field ( mandatory ) CondType, CalcType, RatePercent;
+
+  /* Determinations */
+  determination calcConditionValue on modify { field CalcType, RatePercent; }
+  determination updateItemPricing on modify { create; delete; field CondValue; }
+
+  /* Validations */
+  validation validateConditionRate on save { create; update; field CondType, RatePercent; }
+
+  /* Side Effects */
+  side effects
+  {
+    field RatePercent affects field CondValue;
+    field CalcType affects field CondValue;
+    field CondValue affects entity _Item, entity _Header;
+  }
+
+  association _Header { with draft; }
+  association _Item   { with draft; }
+
+  mapping for zso_cond
+  {
+    OrderId            = order_id;
+    ItemId             = item_id;
+    CondId             = cond_id;
+    CondType           = cond_type;
+    CalcType           = calc_type;
+    RatePercent        = rate_percent;
+    CukyField          = cuky_field;
+    CondValue          = cond_value;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+
+}
+
+/* ===================================================================== */
+/* 4. GRANDCHILD ENTITY: DELIVERY SCHEDULE LINES                         */
+/* ===================================================================== */
+
+define behavior for ZI_SO_SCHED alias DeliverySchedule
+persistent table zso_sched
+draft table zso_dt_sched
+lock dependent by _Header
+authorization dependent by _Header
+early numbering
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( readonly ) OrderId,
+                     ItemId,
+                     SchedId,
+                     SchedWeight,
+                     CreatedBy,
+                     CreatedAt,
+                     LastChangedBy,
+                     LastChangedAt,
+                     LocalLastChangedAt;
+
+  field ( mandatory ) DeliveryDate, Plant, ConfirmedQty, Uom;
+
+
+   /* Determinations */
+  determination updateItemWeight on modify { create; delete; field SchedWeight; }
+
+  /* Validations */
+  validation validateScheduleQty on save { create; update; field DeliveryDate, ConfirmedQty; }
+
+  /* Side Effects */
+  side effects
+  {
+    field SchedWeight affects entity _Item, entity _Header;
+    entity _Hu affects field SchedWeight, entity _Item, entity _Header;
+  }
+
+  association _Header { with draft; }
+  association _Item   { with draft; }
+  association _Hu     { create; with draft; }
+
+  mapping for zso_sched
+  {
+    OrderId            = order_id;
+    ItemId             = item_id;
+    SchedId            = sched_id;
+    DeliveryDate       = delivery_date;
+    Plant              = plant;
+    Uom                = uom;
+    ConfirmedQty       = confirmed_qty;
+    WeightUnit         = weight_unit;
+    SchedWeight        = sched_weight;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+
+}
+
+
+/* ===================================================================== */
+/* 5. GREAT-GRANDCHILD ENTITY: HANDLING UNITS                            */
+/* ===================================================================== */
+
+define behavior for ZI_SO_HU alias HandlingUnit
+persistent table zso_hu
+draft table zso_dt_hu
+lock dependent by _Header
+authorization dependent by _Header
+early numbering
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly ) OrderId,
+                     ItemId,
+                     SchedId,
+                     HuId,
+                     CreatedBy,
+                     CreatedAt,
+                     LastChangedBy,
+                     LastChangedAt,
+                     LocalLastChangedAt;
+
+  field ( mandatory ) PackagingType, GrossWeight, WeightUnit;
+
+  /* Determinations */
+  determination updateSchedWeight on modify { create; delete; field GrossWeight; }
+
+  /* Validations */
+  validation validateGrossWeight on save { create; update; field GrossWeight; }
+
+  /* Side Effects */
+
+  side effects
+  {
+    field GrossWeight affects entity _Sched, entity _Header;
+  }
+
+
+  association _Header { with draft; }
+  association _Sched  { with draft; }
+
+  mapping for zso_hu
+  {
+    OrderId            = order_id;
+    ItemId             = item_id;
+    SchedId            = sched_id;
+    HuId               = hu_id;
+    SerialNo           = serial_no;
+    PackagingType      = packaging_type;
+    WeightUnit         = weight_unit;
+    GrossWeight        = gross_weight;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}
+
+define behavior for ZI_SO_PARTNER alias SalesOrderPartner
+persistent table zso_partner
+draft table zso_dt_partner
+lock dependent by _Header
+authorization dependent by _Header
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly ) OrderId,
+                     CreatedBy,
+                     CreatedAt,
+                     LastChangedBy,
+                     LastChangedAt,
+                     LocalLastChangedAt;
+
+  field ( readonly : update, mandatory : create ) PartnerRole;
+  field ( mandatory ) PartnerId;
+
+  /* Determinations */
+  determination fetchPartnerDetails on modify { field PartnerId; }
+
+  /* Validations */
+  validation validatePartnerRole on save { create; update; field PartnerRole, PartnerId; }
+
+  /* Side Effects */
+  side effects
+  {
+    field PartnerId affects field PartnerName, field City;
+  }
+
+  association _Header { with draft; }
+
+  mapping for zso_partner
+  {
+    OrderId            = order_id;
+    PartnerRole        = partner_role;
+    PartnerId          = partner_id;
+    PartnerName        = partner_name;
+    City               = city;
+    CreatedBy          = created_by;
+    CreatedAt          = created_at;
+    LastChangedBy      = last_changed_by;
+    LastChangedAt      = last_changed_at;
+    LocalLastChangedAt = local_last_changed_at;
+  }
+}

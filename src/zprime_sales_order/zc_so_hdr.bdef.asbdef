@@ -1,0 +1,72 @@
+projection;
+strict ( 2 );
+use draft;
+use side effects;
+
+
+define behavior for ZC_SO_HDR alias SalesOrderHeader
+{
+  use create;
+  use update;
+  use delete;
+
+  use action SubmitOrder;
+  use action ReleaseOrder;
+  use action RejectOrder;
+  use action DeepCopyOrder;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use association _Item { create; with draft; }
+  use association _Partner { create; with draft; }
+}
+
+define behavior for ZC_SO_ITEM1 alias SalesOrderItem
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+  use association _Cond { create; with draft; }
+  use association _Sched { create; with draft; }
+}
+
+define behavior for ZC_SO_COND alias PricingCondition
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+  use association _Item { with draft; }
+}
+
+define behavior for ZC_SO_SCHED alias DeliverySchedule
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+  use association _Item { with draft; }
+  use association _Hu { create; with draft; }
+}
+
+define behavior for ZC_SO_HU alias HandlingUnit
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+  use association _Sched { with draft; }
+}
+
+define behavior for ZC_SO_PARTNER alias SalesOrderPartner
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+}

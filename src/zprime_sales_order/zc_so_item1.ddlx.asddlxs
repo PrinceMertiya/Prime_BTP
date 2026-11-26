@@ -1,0 +1,49 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Sales Order Item',
+    typeNamePlural: 'Sales Order Items',
+    title: { type: #STANDARD, value: 'ItemId' },
+    description: { type: #STANDARD, value: 'Material' }
+  }
+}
+annotate view ZC_SO_ITEM1 with
+{
+  @UI.facet: [
+    { id: 'ItemInfo',   purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Item Details',       position: 10 },
+    { id: 'Conditions', purpose: #STANDARD, type: #LINEITEM_REFERENCE,       label: 'Pricing Conditions', position: 20, targetElement: '_Cond' },
+    { id: 'Schedules',  purpose: #STANDARD, type: #LINEITEM_REFERENCE,       label: 'Delivery Schedules', position: 30, targetElement: '_Sched' }
+  ]
+
+  @EndUserText.label: 'Item ID'
+  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }] }
+  ItemId;
+
+  @EndUserText.label: 'Material'
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  Material;
+
+  @EndUserText.label: 'Quantity'
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  Quantity;
+
+  @EndUserText.label: 'Unit of Measure'
+  @UI: { lineItem: [{ position: 35 }], identification: [{ position: 35 }] }
+  Uom;
+
+  @EndUserText.label: 'Unit Price'
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  UnitPrice;
+
+  @EndUserText.label: 'Item Amount'
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  ItemAmount;
+
+  @EndUserText.label: 'Item Weight'
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+  ItemWeight;
+
+  @EndUserText.label: 'Weight Unit'
+  @UI: { identification: [{ position: 65 }] }
+  WeightUnit;
+}

@@ -1,0 +1,9 @@
+@EndUserText.label: 'Service Definition: Sales Order Hierarchy'
+define service ZUI_SO_HDR_O4 {
+  expose ZC_SO_HDR     as SalesOrderHeader;
+  expose ZC_SO_ITEM1   as SalesOrderItem;
+  expose ZC_SO_COND    as PricingCondition;
+  expose ZC_SO_SCHED   as DeliverySchedule;
+  expose ZC_SO_HU      as HandlingUnit;
+  expose ZC_SO_PARTNER as SalesOrderPartner;
+}

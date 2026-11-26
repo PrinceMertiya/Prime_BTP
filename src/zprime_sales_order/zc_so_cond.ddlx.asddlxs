@@ -1,0 +1,35 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Pricing Condition',
+    typeNamePlural: 'Pricing Conditions',
+    title: { type: #STANDARD, value: 'CondId' },
+    description: { type: #STANDARD, value: 'CondType' }
+  }
+}
+annotate view ZC_SO_COND with
+{
+  @UI.facet: [
+    { id: 'CondInfo', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Condition Details', position: 10 }
+  ]
+
+  @EndUserText.label: 'Condition ID'
+  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }] }
+  CondId;
+
+  @EndUserText.label: 'Condition Type'
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  CondType;
+
+  @EndUserText.label: 'Calculation Type (P/F)'
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  CalcType;
+
+  @EndUserText.label: 'Rate / Percent'
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  RatePercent;
+
+  @EndUserText.label: 'Condition Value'
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  CondValue;
+}

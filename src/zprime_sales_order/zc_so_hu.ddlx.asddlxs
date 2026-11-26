@@ -1,0 +1,35 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Handling Unit',
+    typeNamePlural: 'Handling Units',
+    title: { type: #STANDARD, value: 'HuId' },
+    description: { type: #STANDARD, value: 'PackagingType' }
+  }
+}
+annotate view ZC_SO_HU with
+{
+  @UI.facet: [
+    { id: 'HuInfo', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Handling Unit Details', position: 10 }
+  ]
+
+  @EndUserText.label: 'Handling Unit ID'
+  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }] }
+  HuId;
+
+  @EndUserText.label: 'Serial Number'
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  SerialNo;
+
+  @EndUserText.label: 'Packaging Type'
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  PackagingType;
+
+  @EndUserText.label: 'Gross Weight'
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  GrossWeight;
+
+  @EndUserText.label: 'Weight Unit'
+  @UI: { lineItem: [{ position: 45 }], identification: [{ position: 45 }] }
+  WeightUnit;
+}

@@ -1,0 +1,31 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: 'Business Partner',
+    typeNamePlural: 'Business Partners',
+    title: { type: #STANDARD, value: 'PartnerRole' },
+    description: { type: #STANDARD, value: 'PartnerName' }
+  }
+}
+annotate view ZC_SO_PARTNER with
+{
+  @UI.facet: [
+    { id: 'PartnerInfo', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE, label: 'Partner Details', position: 10 }
+  ]
+
+  @EndUserText.label: 'Partner Role (AG/WE/RE/RG)'
+  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }] }
+  PartnerRole;
+
+  @EndUserText.label: 'Partner ID'
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  PartnerId;
+
+  @EndUserText.label: 'Partner Name'
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  PartnerName;
+
+  @EndUserText.label: 'City'
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  City;
+}
